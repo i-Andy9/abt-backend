@@ -68,7 +68,7 @@ const addEmployee = async (req, res) => {
       return;
     }
 
-    const { nombre, rut, direccion, telefono } = req.body;
+    const { nombre, rut, direccion, telefono,empresa } = req.body;
 
     //prevent duplicate Employees
     const EmployeesExist = await Employees.findOne({ rut });
@@ -94,7 +94,45 @@ const addEmployee = async (req, res) => {
   }
 };
 const editEmployee = async (req, res) => {
-  res.json({ msg: "desde edit employee" });
+  try {
+    const { rut } = req.params
+    console.log(req.body)
+    const {nombre, direccion, telefono,empresa}= req.body
+    if ([null, undefined].includes(rut) || rut.length <7 ) {
+       
+      res.status(400).json({ 
+        msg: "Sintaxis no valida", 
+        status: "bad request" });
+        return
+    }
+ 
+    const employeeExist = await Employees.findOne({ rut })
+    
+    if (!employeeExist) {
+      res.status(404).json({
+        msg: `No se han encontrados registros con el rut ${rut}`,
+        code: 404,
+      });
+      return;
+    } 
+
+     employeeExist.nombre = nombre || employeeExist.nombre 
+     employeeExist.direccion= direccion || employeeExist.direccion
+     employeeExist.telefono= telefono || employeeExist.telefono
+     employeeExist.empresa= empresa || employeeExist.empresa
+ 
+     
+     const employeeUpdated = await employeeExist.save()
+
+    return res.status(200).json({
+        msg: `Se ha editado correctamente el registro de la empresa con rut ${rut}`,
+        rut,
+        employeeUpdated
+    });
+  } catch (error) {
+    res.send({ msg: `${error.message}` });
+    return
+  }
 };
 const deleteEmployee = async (req, res) => {
   try {

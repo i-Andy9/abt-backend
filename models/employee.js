@@ -6,6 +6,7 @@ const employeeSchema =  new mongoose.Schema({
     direccion:{type: String,trim: true,required: true,},
     rut:{type: String,trim: true,required: true,},
     telefono:{type: Number,trim: true,required: true,},
+    empresa:{type: String,trim: true,required: true,},
 })
 
 const Employees = model("Employees", employeeSchema)
