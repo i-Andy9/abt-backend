@@ -11,7 +11,7 @@ dotenv.config()// read .env
 
 dbConection()// db conection
 
-const dominiopermitido = ['http://127.0.0.1:5173','http://localhost']
+const dominiopermitido = ['http://127.0.0.1:5173','http://localhost', 'https://abtfrontendaz.netlify.app/']
 const corsOption = {
     origin : function(origin, callback) {
         if(dominiopermitido.indexOf(origin) !== -1) {
